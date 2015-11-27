@@ -21,15 +21,12 @@ public class Client {
             try (InputStream in = socket.getInputStream();
                  OutputStream out = socket.getOutputStream()) {
 
-                String line = "Hello!";
-                out.write(line.getBytes());
+                Action action = new Action();
+                action.type = Action.Type.LOGIN;
+                action.args = "login password";
+                Protocol protocol = new Protocol();
+                out.write(protocol.encode(action));
                 out.flush();
-
-                byte[] data = new byte[32 * 1024];
-                int readBytes = in.read(data);
-
-                System.out.printf("Server> %s", new String(data, 0, readBytes));
-
             }
 
         } catch (IOException e) {
