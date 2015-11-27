@@ -2,7 +2,6 @@ package ru.mail.track.kolodzey;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 
@@ -29,8 +28,8 @@ public class Server {
                 Protocol protocol = new Protocol();
                 byte[] buf = new byte[32 * 1024];
                 in.read(buf);
-                Action action = protocol.decode(buf);
-                System.out.printf("Client>%s", action.args);
+                NetData netData = protocol.decode(buf);
+                System.out.println(netData.toString());
             }
 
         } catch (IOException e) {

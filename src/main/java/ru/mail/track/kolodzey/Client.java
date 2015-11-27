@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
+import java.util.Arrays;
 
 import org.apache.commons.io.IOUtils;
 
@@ -21,11 +22,10 @@ public class Client {
             try (InputStream in = socket.getInputStream();
                  OutputStream out = socket.getOutputStream()) {
 
-                Action action = new Action();
-                action.type = Action.Type.LOGIN;
-                action.args = "login password";
+                //NetData netData = new LoginNetData("admin", "111", NetData.Sender.CLIENT);
+                NetData netData = new ChatCreateNetData(Arrays.asList(2, 3, 5), NetData.Sender.CLIENT);
                 Protocol protocol = new Protocol();
-                out.write(protocol.encode(action));
+                out.write(protocol.encode(netData));
                 out.flush();
             }
 

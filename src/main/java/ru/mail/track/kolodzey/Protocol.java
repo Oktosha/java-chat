@@ -2,24 +2,25 @@ package ru.mail.track.kolodzey;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationConfig;
 
 import java.io.IOException;
 import java.net.ProtocolException;
 
 public class Protocol {
-	public byte[] encode(Action action) throws ProtocolException {
+	public byte[] encode(NetData netData) throws ProtocolException {
 		ObjectMapper jsonMapper = new ObjectMapper();
 		try {
-			return jsonMapper.writeValueAsBytes(action);
+			return jsonMapper.writeValueAsBytes(netData);
 		} catch(JsonProcessingException e) {
 			throw new ProtocolException();
 		}
 	}
 
-	public Action decode(byte[] encodedAction) throws ProtocolException {
+	public NetData decode(byte[] encodedData) throws ProtocolException {
 		ObjectMapper jsonMapper = new ObjectMapper();
 		try {
-			return jsonMapper.readValue(encodedAction, Action.class);
+			return jsonMapper.readValue(encodedData, NetData.class);
 		} catch(IOException e) {
 		 	throw new ProtocolException();
 		}
