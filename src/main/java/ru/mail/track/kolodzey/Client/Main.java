@@ -1,4 +1,4 @@
-package ru.mail.track.kolodzey;
+package ru.mail.track.kolodzey.Client;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -9,8 +9,9 @@ import java.util.Arrays;
 import org.apache.commons.io.IOUtils;
 import ru.mail.track.kolodzey.NetData.NetData;
 import ru.mail.track.kolodzey.NetData.ChatCreateNetData;
+import ru.mail.track.kolodzey.Protocol;
 
-public class Client {
+public class Main {
 
     public static final int PORT = 19000;
     public static final String HOST = "localhost";

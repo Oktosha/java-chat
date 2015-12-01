@@ -1,4 +1,4 @@
-package ru.mail.track.kolodzey;
+package ru.mail.track.kolodzey.Server;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -7,8 +7,9 @@ import java.net.Socket;
 
 import org.apache.commons.io.IOUtils;
 import ru.mail.track.kolodzey.NetData.NetData;
+import ru.mail.track.kolodzey.Protocol;
 
-public class Server {
+public class Main {
 
     public static final int PORT = 19000;
 
