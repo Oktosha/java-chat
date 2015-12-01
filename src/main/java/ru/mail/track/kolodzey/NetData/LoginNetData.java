@@ -1,8 +1,7 @@
-package ru.mail.track.kolodzey;
+package ru.mail.track.kolodzey.NetData;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import sun.rmi.runtime.Log;
 
 /**
  * Created by DKolodzey on 27.11.15.

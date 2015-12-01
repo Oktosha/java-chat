@@ -1,7 +1,5 @@
-package ru.mail.track.kolodzey;
+package ru.mail.track.kolodzey.NetData;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import java.util.ArrayList;
@@ -11,11 +9,11 @@ import java.util.List;
  * Created by DKolodzey on 27.11.15.
  */
 public class ChatCreateNetData extends NetData {
-    ChatCreateNetData() {
+    public ChatCreateNetData() {
         this(null, null);
     }
 
-    ChatCreateNetData(List<Integer> participantIds, Sender sender) {
+    public ChatCreateNetData(List<Integer> participantIds, Sender sender) {
         this.requestedAction = Action.CHAT_CREATE;
         this.sender = sender;
         this.participantIds = participantIds;

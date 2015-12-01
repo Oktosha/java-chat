@@ -1,4 +1,4 @@
-package ru.mail.track.kolodzey;
+package ru.mail.track.kolodzey.NetData;
 
 /**
  * Created by DKolodzey on 01.12.15.

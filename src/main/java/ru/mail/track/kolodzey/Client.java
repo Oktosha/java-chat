@@ -7,6 +7,8 @@ import java.net.Socket;
 import java.util.Arrays;
 
 import org.apache.commons.io.IOUtils;
+import ru.mail.track.kolodzey.NetData.NetData;
+import ru.mail.track.kolodzey.NetData.ChatCreateNetData;
 
 public class Client {
 

@@ -2,7 +2,7 @@ package ru.mail.track.kolodzey;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationConfig;
+import ru.mail.track.kolodzey.NetData.NetData;
 
 import java.io.IOException;
 import java.net.ProtocolException;

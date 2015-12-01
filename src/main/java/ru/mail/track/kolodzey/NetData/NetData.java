@@ -1,4 +1,4 @@
-package ru.mail.track.kolodzey;
+package ru.mail.track.kolodzey.NetData;
 
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
