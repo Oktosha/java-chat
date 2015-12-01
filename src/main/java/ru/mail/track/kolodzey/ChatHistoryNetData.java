@@ -19,6 +19,6 @@ public class ChatHistoryNetData extends NetData {
 
     @Override
     public String toString() {
-        return super.toString() + chatID;
+        return super.toString() + " " + chatID;
     }
 }
