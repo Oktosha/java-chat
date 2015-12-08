@@ -60,7 +60,7 @@ public class InputHandler {
     }
 
     public ChatCreateNetData parseChatCreate(String args) throws InvalidArgsFormatForCommandException {
-        String[] tokens = args.split("\\s+,\\s+");
+        String[] tokens = args.split("\\s*,\\s*");
         List<Integer> users = new ArrayList<>();
         if (tokens.length < 1)
             throw new InvalidArgsFormatForCommandException("Too few users for chat.\n"
@@ -68,7 +68,7 @@ public class InputHandler {
                                                             + "Enter chat participants userIds separated by commas.");
         for (String token : tokens) {
             try {
-                users.add(Integer.valueOf(token));
+                users.add(Integer.valueOf(token.trim()));
             } catch (NumberFormatException e) {
                 throw new InvalidArgsFormatForCommandException("Can't parse [" + token + "] as userId.\n"
                                                                 + "UserIds should be integers.");
@@ -80,7 +80,7 @@ public class InputHandler {
     public ChatSendNetData parseChatSend(String args) throws InvalidArgsFormatForCommandException {
         String[] tokens = args.split("\\s+", 2);
         try {
-            Integer chatId = Integer.valueOf(tokens[0]);
+            Integer chatId = Integer.valueOf(tokens[0].trim());
             return new ChatSendNetData(chatId, tokens[1], NetData.Sender.CLIENT);
         } catch (NumberFormatException e) {
             throw new InvalidArgsFormatForCommandException("Can't parse [" + tokens[0] + "] as valid integer chatID\n");
@@ -89,7 +89,7 @@ public class InputHandler {
 
     public ChatHistoryNetData parseChatHistory(String args) throws InvalidArgsFormatForCommandException {
         try {
-            Integer chatId = Integer.valueOf(args);
+            Integer chatId = Integer.valueOf(args.trim());
             return new ChatHistoryNetData(chatId, NetData.Sender.CLIENT);
         } catch (NumberFormatException e) {
             throw new InvalidArgsFormatForCommandException("Can't parse [" + args + "] as valid integer chatID\n");
