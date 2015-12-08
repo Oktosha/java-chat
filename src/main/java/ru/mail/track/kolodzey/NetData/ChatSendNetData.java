@@ -6,10 +6,10 @@ package ru.mail.track.kolodzey.NetData;
 public class ChatSendNetData extends NetData {
     public int chatID;
     public String message;
-    ChatSendNetData() {
+    public ChatSendNetData() {
         this(-1, null, null);
     }
-    ChatSendNetData(int chatID, String message, Sender sender) {
+    public ChatSendNetData(int chatID, String message, Sender sender) {
         this.requestedAction = Action.CHAT_SEND;
         this.sender = sender;
         this.message = message;
