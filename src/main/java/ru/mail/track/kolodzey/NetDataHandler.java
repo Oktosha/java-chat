@@ -6,6 +6,6 @@ import sun.nio.ch.Net;
 /**
  * Created by DKolodzey on 14.12.15.
  */
-public abstract class Handler {
+public abstract class NetDataHandler {
     public abstract NetData handle(NetData data);
 }

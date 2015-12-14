@@ -14,7 +14,7 @@ public class NetData {
         CHAT_CREATE("/chat_create"),
         CHAT_SEND("/chat_send"),
         SIGN_IN("/sign_in"),
-        NOTIFY(null);
+        NOTIFY("NOTIFY");
 
         private final String consoleCommand;
         Action(String consoleCommand) {
