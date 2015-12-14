@@ -29,6 +29,8 @@ public class DummyUserStoreImpl implements UserStore {
 
     @Override
     public User createUser(String login, String password) {
+        if (idByLogin.containsKey(login))
+            return null;
         User user = new User(users.size(), login, password);
         users.add(user);
         idByLogin.put(user.login, user.id);
