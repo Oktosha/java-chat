@@ -1,4 +1,4 @@
-package ru.mail.track.kolodzey.Server;
+package ru.mail.track.kolodzey.Server.store;
 
 import java.util.ArrayList;
 import java.util.HashMap;

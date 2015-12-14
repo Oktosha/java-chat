@@ -1,4 +1,4 @@
-package ru.mail.track.kolodzey.Server;
+package ru.mail.track.kolodzey.Server.store;
 
 /**
  * Created by DKolodzey on 14.12.15.
