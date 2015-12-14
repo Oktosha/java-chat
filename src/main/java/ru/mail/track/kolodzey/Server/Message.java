@@ -5,7 +5,7 @@ import java.time.Instant;
  */
 public class Message {
     public Long id;
-    public String message;
+    public String text;
     public Instant timestamp;
     public Long chatId;
     public Long senderId;

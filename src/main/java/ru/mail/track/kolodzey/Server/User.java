@@ -6,5 +6,5 @@ package ru.mail.track.kolodzey.Server;
 public class User {
     public Long id;
     public String login;
-    public byte[] passwordHash;
+    public String password;
 }
