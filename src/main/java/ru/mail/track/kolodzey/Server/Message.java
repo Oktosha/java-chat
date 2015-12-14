@@ -4,9 +4,9 @@ import java.time.Instant;
  * Created by DKolodzey on 14.12.15.
  */
 public class Message {
-    public Long id;
+    public Integer id;
     public String text;
     public Instant timestamp;
-    public Long chatId;
-    public Long senderId;
+    public Integer chatId;
+    public Integer senderId;
 }

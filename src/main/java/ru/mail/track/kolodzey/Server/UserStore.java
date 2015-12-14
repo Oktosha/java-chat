@@ -5,6 +5,6 @@ package ru.mail.track.kolodzey.Server;
  */
 public interface UserStore {
     User getUserByLogin(String login);
-    User getUserById(Long id);
+    User getUserById(Integer id);
     User createUser(String login, String password);
 }

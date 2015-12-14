@@ -7,7 +7,7 @@ import java.util.Set;
  * Created by DKolodzey on 14.12.15.
  */
 public class Chat {
-    public Long id;
-    public List<Long> messages;
-    public Set<Long> participants;
+    public Integer id;
+    public List<Integer> messages;
+    public Set<Integer> participants;
 }
