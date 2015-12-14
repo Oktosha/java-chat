@@ -45,9 +45,20 @@ public class InputHandler {
                 return parseChatCreate(args);
             case "/chat_send":
                 return parseChatSend(args);
+            case "/sign_in":
+                return parseSignIn(args);
             default:
                 throw new NoSuchCommandException(name);
         }
+    }
+
+    private SignInNetData parseSignIn(String args) throws InvalidArgsFormatForCommandException {
+        String[] tokens = args.split("\\s+");
+        if (tokens.length != 2) {
+            throw new InvalidArgsFormatForCommandException("Expected username and password split by space.\n"
+                    + "Found " + tokens.length + " arguments split by space.");
+        }
+        return new SignInNetData(tokens[0], tokens[1], NetData.Sender.CLIENT);
     }
 
     public LoginNetData parseLogin(String args) throws InvalidArgsFormatForCommandException {

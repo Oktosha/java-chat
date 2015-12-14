@@ -13,6 +13,7 @@ public class NetData {
         CHAT_HISTORY("/chat_history"),
         CHAT_CREATE("/chat_create"),
         CHAT_SEND("/chat_send"),
+        SIGN_IN("/sign_in"),
         NOTIFY(null);
 
         private final String consoleCommand;
