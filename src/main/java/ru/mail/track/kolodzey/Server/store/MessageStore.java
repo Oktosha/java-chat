@@ -11,4 +11,5 @@ public interface MessageStore {
     Message getMessageById(Integer id);
     Message createMessage(String text, Instant timestamp, Integer chatId, Integer senderId);
     Chat createChat(Set<Integer> participants);
+    Chat getDialogByParticipants(Set<Integer> participantIds);
 }
