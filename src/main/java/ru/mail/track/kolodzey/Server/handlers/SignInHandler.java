@@ -12,9 +12,9 @@ import ru.mail.track.kolodzey.Server.store.User;
  */
 public class SignInHandler extends NetDataHandler {
 
-    Context context;
+    private Context context;
 
-    SignInHandler(Context context) {
+    public SignInHandler(Context context) {
         this.context = context;
     }
 
