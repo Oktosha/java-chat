@@ -34,7 +34,7 @@ public class InputHandler {
     public NetData parse(String encodedCommand) throws NoSuchCommandException, InvalidArgsFormatForCommandException {
         String[] tokens = encodedCommand.split("\\s+", 2);
         String name = tokens[0];
-        String args = tokens[1];
+        String args = tokens.length > 1 ? tokens[1]: " ";
 
         switch (name) {
             case "/login":

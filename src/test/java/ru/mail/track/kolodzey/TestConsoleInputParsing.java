@@ -75,4 +75,10 @@ public class TestConsoleInputParsing {
                                                        InputHandler.NoSuchCommandException {
         NetData parsed = handler.parse("/prove p = np");
     }
+
+    @Test(expected = InputHandler.InvalidArgsFormatForCommandException.class)
+    public void testCommandWithNoArgs() throws InputHandler.InvalidArgsFormatForCommandException,
+                                               InputHandler.NoSuchCommandException {
+        NetData parsed = handler.parse("/login");
+    }
 }

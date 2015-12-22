@@ -2,11 +2,13 @@ package ru.mail.track.kolodzey.Server;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 
 import org.apache.commons.io.IOUtils;
 import ru.mail.track.kolodzey.NetData.NetData;
+import ru.mail.track.kolodzey.NetData.NotifyNetData;
 import ru.mail.track.kolodzey.Protocol;
 
 public class Main {
@@ -25,13 +27,19 @@ public class Main {
 
             System.out.println("Accepted. " + socket.getInetAddress());
 
-            try (InputStream in = socket.getInputStream()) {
+            try (InputStream in = socket.getInputStream();
+                 OutputStream out = socket.getOutputStream()) {
 
                 Protocol protocol = new Protocol();
-                byte[] buf = new byte[32 * 1024];
-                in.read(buf);
-                NetData netData = protocol.decode(buf);
-                System.out.println(netData.toString());
+                while(true) {
+                    byte[] buf = new byte[32 * 1024];
+                    in.read(buf);
+                    NetData netData = protocol.decode(buf);
+                    System.out.println(netData.toString());
+                    NotifyNetData answer = new NotifyNetData("I hear you", NetData.Sender.SERVER);
+                    out.write(protocol.encode(answer));
+                    out.flush();
+                }
             }
 
         } catch (IOException e) {
