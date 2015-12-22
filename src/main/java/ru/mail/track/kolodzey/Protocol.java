@@ -10,6 +10,7 @@ import java.net.ProtocolException;
 public class Protocol {
 	public byte[] encode(NetData netData) throws ProtocolException {
 		ObjectMapper jsonMapper = new ObjectMapper();
+		jsonMapper.findAndRegisterModules();
 		try {
 			return jsonMapper.writeValueAsBytes(netData);
 		} catch(JsonProcessingException e) {
@@ -19,6 +20,7 @@ public class Protocol {
 
 	public NetData decode(byte[] encodedData) throws ProtocolException {
 		ObjectMapper jsonMapper = new ObjectMapper();
+		jsonMapper.findAndRegisterModules();
 		try {
 			return jsonMapper.readValue(encodedData, NetData.class);
 		} catch(IOException e) {

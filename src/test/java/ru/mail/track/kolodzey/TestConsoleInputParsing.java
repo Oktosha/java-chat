@@ -40,7 +40,7 @@ public class TestConsoleInputParsing {
     public void testParseChatSend() throws InputHandler.InvalidArgsFormatForCommandException {
         ChatSendNetData parsed = handler.parseChatSend("4 Hello, People!  ");
         assertEquals("Hello, People!  ", parsed.message);
-        assertEquals(4, parsed.chatID);
+        assertEquals(new Integer(4), parsed.chatID);
         assertEquals(NetData.Sender.CLIENT, parsed.sender);
         assertEquals(NetData.Action.CHAT_SEND, parsed.requestedAction);
     }
@@ -48,7 +48,7 @@ public class TestConsoleInputParsing {
     @Test
     public void testParseChatHistory() throws InputHandler.InvalidArgsFormatForCommandException {
         ChatHistoryNetData parsed = handler.parseChatHistory("4");
-        assertEquals(4, parsed.chatID);
+        assertEquals(new Integer(4), parsed.chatID);
         assertEquals(NetData.Sender.CLIENT, parsed.sender);
         assertEquals(NetData.Action.CHAT_HISTORY, parsed.requestedAction);
     }

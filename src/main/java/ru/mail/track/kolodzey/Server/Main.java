@@ -13,8 +13,7 @@ import ru.mail.track.kolodzey.NetData.NetData;
 import ru.mail.track.kolodzey.NetData.NotifyNetData;
 import ru.mail.track.kolodzey.NetDataHandler;
 import ru.mail.track.kolodzey.Protocol;
-import ru.mail.track.kolodzey.Server.handlers.LoginHandler;
-import ru.mail.track.kolodzey.Server.handlers.SignInHandler;
+import ru.mail.track.kolodzey.Server.handlers.*;
 import ru.mail.track.kolodzey.Server.store.DummyMessageStoreImpl;
 import ru.mail.track.kolodzey.Server.store.DummyUserStoreImpl;
 
@@ -36,6 +35,9 @@ public class Main {
             Context context = new Context(new DummyUserStoreImpl(), new DummyMessageStoreImpl());
             handlers.put(NetData.Action.SIGN_IN, new SignInHandler(context));
             handlers.put(NetData.Action.LOGIN, new LoginHandler(context));
+            handlers.put(NetData.Action.CHAT_CREATE, new ChatCreateHandler(context));
+            handlers.put(NetData.Action.CHAT_SEND, new ChatSendHandler(context));
+            handlers.put(NetData.Action.CHAT_HISTORY, new ChatHistoryHandler(context));
 
             try (InputStream in = socket.getInputStream();
                  OutputStream out = socket.getOutputStream()) {

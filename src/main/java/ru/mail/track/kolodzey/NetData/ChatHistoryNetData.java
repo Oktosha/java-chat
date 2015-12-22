@@ -5,13 +5,13 @@ package ru.mail.track.kolodzey.NetData;
  */
 public class ChatHistoryNetData extends NetData {
 
-    public int chatID;
+    public Integer chatID;
 
     public ChatHistoryNetData() {
-        this(-1, null);
+        this(null, null);
     }
 
-    public ChatHistoryNetData(int chatID, Sender sender) {
+    public ChatHistoryNetData(Integer chatID, Sender sender) {
         this.sender = sender;
         this.requestedAction = Action.CHAT_HISTORY;
         this.chatID = chatID;

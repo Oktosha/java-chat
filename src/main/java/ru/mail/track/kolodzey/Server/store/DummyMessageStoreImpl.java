@@ -17,13 +17,8 @@ public class DummyMessageStoreImpl implements MessageStore {
         public UserPair(Set<Integer> participants) {
             Integer[] participantArray = new Integer[2];
             participants.toArray(participantArray);
-            if (participantArray.length == 1) {
-                this.userId1 = participantArray[0];
-                this.userId2 = participantArray[0];
-            } else {
-                this.userId1 = participantArray[0];
-                this.userId2 = participantArray[1];
-            }
+            this.userId1 = participantArray[0];
+            this.userId2 = participantArray[1] != null ? participantArray[1] : participantArray[0];
         }
 
         public UserPair(Integer userId1, Integer userId2) {
