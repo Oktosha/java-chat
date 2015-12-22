@@ -39,11 +39,11 @@ public class ChatHistoryHandler extends NetDataHandler {
 
     private String convertChatToString(Chat chat) {
         StringBuilder builder = new StringBuilder("History of chat " + chat.id
-                + "whose participants are " + chat.participants);
+                + " whose participants are " + chat.participants + "\n");
         for (Integer messageId : chat.messages) {
             Message message = context.messageStore.getMessageById(messageId);
             User author = context.userStore.getUserById(message.senderId);
-            builder.append(author.id + " aka " + author.login + "[" + message.timestamp + "]: " + message.text);
+            builder.append(author.id + " aka " + author.login + " [" + message.timestamp + "]: " + message.text + "\n");
         }
         return builder.toString();
     }

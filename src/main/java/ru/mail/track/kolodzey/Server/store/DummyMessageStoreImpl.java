@@ -56,6 +56,7 @@ public class DummyMessageStoreImpl implements MessageStore {
         if (getChatById(chatId) == null)
             return null;
         chats.get(chatId).messages.add(message.id);
+        messages.add(message);
         return message;
     }
 
