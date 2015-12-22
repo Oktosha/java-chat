@@ -2,6 +2,7 @@ package ru.mail.track.kolodzey.Client;
 
 import ru.mail.track.kolodzey.NetData.*;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -92,7 +93,7 @@ public class InputHandler {
         String[] tokens = args.split("\\s+", 2);
         try {
             Integer chatId = Integer.valueOf(tokens[0].trim());
-            return new ChatSendNetData(chatId, tokens[1], NetData.Sender.CLIENT);
+            return new ChatSendNetData(chatId, tokens[1], Instant.now(), NetData.Sender.CLIENT);
         } catch (NumberFormatException e) {
             throw new InvalidArgsFormatForCommandException("Can't parse [" + tokens[0] + "] as valid integer chatID\n");
         }
