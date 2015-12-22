@@ -22,7 +22,8 @@ public class Main {
     public static final int PORT = 19000;
     private static Map<NetData.Action, NetDataHandler> handlers = new HashMap<>();
     public static void main(String[] args) {
-
+        //TODO: переименовать main в run, main наследовать от runnable
+        //TODO: в другом main написать new thread this start
         ServerSocket sSocket = null;
         try {
             sSocket = new ServerSocket(PORT);
@@ -30,7 +31,7 @@ public class Main {
             System.out.println("Started, waiting for connection");
 
             Socket socket = sSocket.accept();
-
+            //TODO: new thread.this.start который снова станет на accept
             System.out.println("Accepted. " + socket.getInetAddress());
             Context context = new Context(new DummyUserStoreImpl(), new DummyMessageStoreImpl());
             handlers.put(NetData.Action.SIGN_IN, new SignInHandler(context));
@@ -44,12 +45,14 @@ public class Main {
 
                 Protocol protocol = new Protocol();
                 while(true) {
-                    byte[] buf = new byte[32 * 1024];
+                    byte[] buf = new byte[32 * 1024]; //TODO: переиспользовать и уменьшить
                     in.read(buf);
                     NetData netData = protocol.decode(buf);
                     System.out.println(netData.toString());
                     NetData answer = null;
                     if (handlers.containsKey(netData.requestedAction)) {
+                        //TODO: не возвращать, а записать answer в очередь
+                        //TODO: отдельный поток, для обработки отправки сообщений из этой очереди
                         answer = handlers.get(netData.requestedAction).handle(netData);
                     } else {
                         answer = new NotifyNetData("I hear you but don't know what to do", NetData.Sender.SERVER);
@@ -60,7 +63,7 @@ public class Main {
             }
 
         } catch (IOException e) {
-            e.printStackTrace();
+            e.printStackTrace(); //TODO: что-то осмысленное, лучше logger
         } finally {
             IOUtils.closeQuietly(sSocket);
         }

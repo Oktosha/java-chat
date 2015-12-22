@@ -8,9 +8,10 @@ import ru.mail.track.kolodzey.Server.store.UserStore;
  * Created by DKolodzey on 14.12.15.
  */
 public class Context {
-    public User user;
+    public User user; //TODO: make tread local
     public UserStore userStore;
     public MessageStore messageStore;
+
     Context(UserStore userStore, MessageStore messageStore) {
         this.user = null;
         this.messageStore = messageStore;

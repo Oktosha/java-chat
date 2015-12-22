@@ -36,7 +36,7 @@ public class Main {
                         NetData inputNetData = inputHandler.parse(inputString);
                         out.write(protocol.encode(inputNetData));
                         out.flush();
-                        byte[] buffer = new byte[320 * 1024];
+                        byte[] buffer = new byte[320]; //TODO: переиспользовать
                         in.read(buffer);
                         NetData answer = protocol.decode(buffer);
                         NotifyNetData castedAnswer = (NotifyNetData) answer;
@@ -46,6 +46,7 @@ public class Main {
                     } catch(InputHandler.InvalidArgsFormatForCommandException e) {
                         System.out.printf("%s\n", e.getMessage());
                     }
+                    //TODO: поток, который слушает сообщения от сервера
                 }
             }
 
