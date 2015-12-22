@@ -13,6 +13,7 @@ import ru.mail.track.kolodzey.NetData.NetData;
 import ru.mail.track.kolodzey.NetData.NotifyNetData;
 import ru.mail.track.kolodzey.NetDataHandler;
 import ru.mail.track.kolodzey.Protocol;
+import ru.mail.track.kolodzey.Server.handlers.LoginHandler;
 import ru.mail.track.kolodzey.Server.handlers.SignInHandler;
 import ru.mail.track.kolodzey.Server.store.DummyMessageStoreImpl;
 import ru.mail.track.kolodzey.Server.store.DummyUserStoreImpl;
@@ -34,6 +35,7 @@ public class Main {
             System.out.println("Accepted. " + socket.getInetAddress());
             Context context = new Context(new DummyUserStoreImpl(), new DummyMessageStoreImpl());
             handlers.put(NetData.Action.SIGN_IN, new SignInHandler(context));
+            handlers.put(NetData.Action.LOGIN, new LoginHandler(context));
 
             try (InputStream in = socket.getInputStream();
                  OutputStream out = socket.getOutputStream()) {
