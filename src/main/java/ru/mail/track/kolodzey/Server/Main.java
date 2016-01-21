@@ -16,6 +16,7 @@ import ru.mail.track.kolodzey.Protocol;
 import ru.mail.track.kolodzey.Server.handlers.*;
 import ru.mail.track.kolodzey.Server.store.DummyMessageStoreImpl;
 import ru.mail.track.kolodzey.Server.store.DummyUserStoreImpl;
+import ru.mail.track.kolodzey.Server.store.SQLStoreProvider;
 
 public class Main {
 
@@ -33,7 +34,8 @@ public class Main {
             Socket socket = sSocket.accept();
             //TODO: new thread.this.start который снова станет на accept
             System.out.println("Accepted. " + socket.getInetAddress());
-            Context context = new Context(new DummyUserStoreImpl(), new DummyMessageStoreImpl());
+            SQLStoreProvider storeProvider = new SQLStoreProvider();
+            Context context = new Context(storeProvider.getUserStore(), new DummyMessageStoreImpl());
             handlers.put(NetData.Action.SIGN_IN, new SignInHandler(context));
             handlers.put(NetData.Action.LOGIN, new LoginHandler(context));
             handlers.put(NetData.Action.CHAT_CREATE, new ChatCreateHandler(context));
