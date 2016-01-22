@@ -35,9 +35,14 @@ public class JDBCExample {
                     + "password TEXT   NOT NULL"
                     + ")";
             stmt.executeUpdate(sql);
+            //sql = "CREATE TYPE dialog_type as ENUM ('dialog', 'polylog');";
+            //stmt.executeUpdate(sql);
+            sql = "DROP TABLE messages, dialogs, polylogs, chats";
+            stmt.executeUpdate(sql);
             sql = "CREATE TABLE IF NOT EXISTS chats"
                     + "("
-                    + "id SERIAL PRIMARY KEY    "
+                    + "id   SERIAL      PRIMARY KEY,"
+                    + "type DIALOG_TYPE NOT NULL    "
                     + ")";
             stmt.executeUpdate(sql);
             sql = "CREATE TABLE IF NOT EXISTS messages"
@@ -78,7 +83,7 @@ public class JDBCExample {
         } catch (ClassNotFoundException e) {
             System.err.println("Unable to load Database driver");
         } catch (SQLException e) {
-            System.err.println("Database troubles: " + e.getStackTrace().toString());
+            System.err.println("Database troubles: " + e.getMessage());
         }
     }
 }
