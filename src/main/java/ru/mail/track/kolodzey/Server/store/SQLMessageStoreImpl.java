@@ -1,10 +1,7 @@
 package ru.mail.track.kolodzey.Server.store;
 
 import javax.sql.DataSource;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.time.Instant;
 import java.util.Set;
 
@@ -34,7 +31,7 @@ public class SQLMessageStoreImpl implements MessageStore {
                 message.senderId = resultSet.getInt("senderID");
                 message.chatId = resultSet.getInt("chatID");
                 message.text = resultSet.getString("text");
-                message.timestamp = resultSet.getTime("time").toInstant();
+                message.timestamp = resultSet.getTimestamp("time").toInstant();
                 message.id = id;
                 return message;
             }
@@ -46,6 +43,30 @@ public class SQLMessageStoreImpl implements MessageStore {
 
     @Override
     public Message createMessage(String text, Instant timestamp, Integer chatId, Integer senderId) {
+        try (Connection c = dataSource.getConnection()) {
+            String sqlInsert = "INSERT INTO messages (text, time, chatId, senderId) VALUES (?, ?, ?, ?)";
+            PreparedStatement stmt = c.prepareStatement(sqlInsert, Statement.RETURN_GENERATED_KEYS);
+            stmt.setString(1, text);
+            stmt.setTimestamp(2, Timestamp.from(timestamp));
+            stmt.setInt(3, chatId);
+            stmt.setInt(4, senderId);
+            int affectedRows = stmt.executeUpdate();
+            if (affectedRows == 0) {
+                throw new SQLException("Creating message failed, no rows affected.");
+            }
+
+            try (ResultSet generatedKeys = stmt.getGeneratedKeys()) {
+                if (generatedKeys.next()) {
+                    int id = generatedKeys.getInt(1);
+                    return getMessageById(id);
+                }
+                else {
+                    throw new SQLException("Creating message failed, no ID obtained.");
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("SQLException: " + e.getMessage());
+        }
         return null;
     }
 

@@ -8,30 +8,6 @@ import java.util.*;
  */
 public class DummyMessageStoreImpl implements MessageStore {
 
-    public static class UserPair {
-        public Integer userId1;
-        public Integer userId2;
-        public int hashCode() {
-            return userId1 + userId2;
-        }
-        public UserPair(Set<Integer> participants) {
-            Integer[] participantArray = new Integer[2];
-            participants.toArray(participantArray);
-            this.userId1 = participantArray[0];
-            this.userId2 = participantArray[1] != null ? participantArray[1] : participantArray[0];
-        }
-
-        public UserPair(Integer userId1, Integer userId2) {
-            this.userId1 = userId1;
-            this.userId2 = userId2;
-        }
-
-        public boolean equals(UserPair other) {
-            return ((userId1 == other.userId1) && (userId2 == other.userId2))
-                    || ((userId2 == other.userId1) && (userId1 == other.userId2));
-        }
-    }
-
     private List<Chat> chats = new ArrayList<>();
     private List<Message> messages = new ArrayList<>();
     private Map<UserPair, Integer> dialogs = new HashMap<>();
@@ -68,16 +44,24 @@ public class DummyMessageStoreImpl implements MessageStore {
         Chat chat = new Chat(chats.size(), participants);
         chats.add(chat);
         if (participants.size() <= 2) {
-            dialogs.put(new UserPair(participants), chat.id);
+            try {
+                dialogs.put(new UserPair(participants), chat.id);
+            } catch (UserPair.InvalidNumberOfUsers e) {
+                System.err.println(e.getMessage());
+            }
         }
         return chat;
     }
 
     @Override
     public Chat getDialogByParticipants(Set<Integer> participantIds) {
-        UserPair pair = new UserPair(participantIds);
-        if (dialogs.containsKey(pair)) {
-            return chats.get(dialogs.get(pair));
+        try {
+            UserPair pair = new UserPair(participantIds);
+            if (dialogs.containsKey(pair)) {
+                return chats.get(dialogs.get(pair));
+            }
+        } catch (UserPair.InvalidNumberOfUsers e) {
+            System.err.println(e.getMessage());
         }
         return null;
     }
