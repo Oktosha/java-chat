@@ -35,7 +35,7 @@ public class Main {
             //TODO: new thread.this.start который снова станет на accept
             System.out.println("Accepted. " + socket.getInetAddress());
             SQLStoreProvider storeProvider = new SQLStoreProvider();
-            Context context = new Context(storeProvider.getUserStore(), new DummyMessageStoreImpl());
+            Context context = new Context(storeProvider.getUserStore(), storeProvider.getMessageStore());
             handlers.put(NetData.Action.SIGN_IN, new SignInHandler(context));
             handlers.put(NetData.Action.LOGIN, new LoginHandler(context));
             handlers.put(NetData.Action.CHAT_CREATE, new ChatCreateHandler(context));
