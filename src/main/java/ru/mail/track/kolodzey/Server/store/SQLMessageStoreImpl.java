@@ -3,6 +3,7 @@ package ru.mail.track.kolodzey.Server.store;
 import javax.sql.DataSource;
 import java.sql.*;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.Set;
 
 /**
@@ -17,7 +18,56 @@ public class SQLMessageStoreImpl implements MessageStore {
 
     @Override
     public Chat getChatById(Integer id) {
+        Chat chat = new Chat();
+        chat.id = id;
+        try (Connection c = dataSource.getConnection()) {
+            PreparedStatement stmt = c.prepareStatement("SELECT * FROM chats WHERE id = ?;");
+            stmt.setInt(1, id);
+            ResultSet resultSet = stmt.executeQuery();
+            if (resultSet.next()) {
+                String chatType = resultSet.getString("type");
+                if (chatType.trim().toLowerCase().equals("dialog")) {
+                    stmt = c.prepareStatement("SELECT * FROM dialogs WHERE chatID = ?;");
+                    stmt.setInt(1, id);
+                    resultSet = stmt.executeQuery();
+                    if (resultSet.next()) {
+                        chat.participants.add(resultSet.getInt("user1"));
+                        chat.participants.add(resultSet.getInt("user2"));
+                    } else {
+                        return null;
+                    }
+                } else {
+                    stmt = c.prepareStatement("SELECT * FROM polylogs WHERE chatID = ?;");
+                    stmt.setInt(1, id);
+                    resultSet = stmt.executeQuery();
+                    while (resultSet.next()) {
+                        chat.participants.add(resultSet.getInt("userID"));
+                    }
+                }
+                stmt = c.prepareStatement("SELECT * FROM messages WHERE chatID = ?;");
+                stmt.setInt(1, id);
+                resultSet = stmt.executeQuery();
+                while (resultSet.next()) {
+                    chat.messages.add(resultSet.getInt("id"));
+                }
+                return chat;
+            } else {
+                return null;
+            }
+        } catch (SQLException e) {
+            System.err.println("SQLException: " + e.getMessage());
+        }
         return null;
+    }
+
+    private Message unpackMessage(ResultSet resultSet) throws SQLException {
+        Message message = new Message();
+        message.senderId = resultSet.getInt("senderID");
+        message.chatId = resultSet.getInt("chatID");
+        message.text = resultSet.getString("text");
+        message.timestamp = resultSet.getTimestamp("time").toInstant();
+        message.id = resultSet.getInt("id");
+        return message;
     }
 
     @Override
@@ -27,16 +77,10 @@ public class SQLMessageStoreImpl implements MessageStore {
             stmt.setInt(1, id);
             ResultSet resultSet = stmt.executeQuery();
             if (resultSet.next()) {
-                Message message = new Message();
-                message.senderId = resultSet.getInt("senderID");
-                message.chatId = resultSet.getInt("chatID");
-                message.text = resultSet.getString("text");
-                message.timestamp = resultSet.getTimestamp("time").toInstant();
-                message.id = id;
-                return message;
+                return unpackMessage(resultSet);
             }
         } catch (SQLException e) {
-            System.err.println("SQLException: " + e.toString());
+            System.err.println("SQLException: " + e.getMessage());
         }
         return null;
     }
@@ -72,11 +116,65 @@ public class SQLMessageStoreImpl implements MessageStore {
 
     @Override
     public Chat createChat(Set<Integer> participants) {
+        try (Connection c = dataSource.getConnection()) {
+            String sql = "INSERT INTO chats (type) VALUES (?)";
+            PreparedStatement stmt = c.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            if (participants.size() > 2) {
+                stmt.setString(1, "polylog");
+            } else {
+                stmt.setString(1, "dialog");
+            }
+            int affectedRows = stmt.executeUpdate();
+            if (affectedRows == 0) {
+                throw new SQLException("Creating chat failed, no rows affected.");
+            }
+            try (ResultSet generatedKeys = stmt.getGeneratedKeys()) {
+                if (generatedKeys.next()) {
+                    int id = generatedKeys.getInt(1);
+                    if (participants.size() > 2) {
+                        sql = "INSERT INTO polylogs (chatID, userID) VALUES (?, ?)";
+                        stmt = c.prepareStatement(sql);
+                        for (Integer userId : participants) {
+                            stmt.setInt(1, id);
+                            stmt.setInt(2, userId);
+                            stmt.execute();
+                        }
+                    } else {
+                        UserPair userPair = new UserPair(participants);
+                        sql = "INSERT INTO dialogs (chatID, user1, user2) VALUES (?, ?, ?)";
+                        stmt = c.prepareStatement(sql);
+                        stmt.setInt(1, id);
+                        stmt.setInt(2, userPair.userId1);
+                        stmt.setInt(3, userPair.userId2);
+                        stmt.execute();
+                    }
+                    return getChatById(id);
+                }
+                else {
+                    throw new SQLException("Creating chat failed, no ID obtained.");
+                }
+            }
+
+        } catch (Exception e) {
+            System.err.println("Failed to createChat because\n" + e.getMessage());
+        }
         return null;
     }
 
     @Override
     public Chat getDialogByParticipants(Set<Integer> participantIds) {
+        try (Connection c = dataSource.getConnection()) {
+            UserPair userPair = new UserPair(participantIds);
+            PreparedStatement stmt = c.prepareStatement("SELECT * FROM dialogs WHERE user1 = ? AND user2 = ?");
+            stmt.setInt(1, userPair.userId1);
+            stmt.setInt(2, userPair.userId2);
+            ResultSet resultSet = stmt.executeQuery();
+            if (resultSet.next()) {
+                return getChatById(resultSet.getInt("chatID"));
+            }
+        } catch (Exception e) {
+            System.err.println("Failed to getDialogByParticipants because\n" + e.getMessage());
+        }
         return null;
     }
 }
